@@ -62,7 +62,8 @@ export default function ReviewForm({ draft, onChange, onAdd }) {
         <input
           type="number"
           min="0"
-          placeholder="Anzahl bisheriger Bewertungen dieses Kontos (falls sichtbar)"
+          placeholder="Bewertungen dieses Kontos gesamt"
+          title="Wie viele Bewertungen das Konto insgesamt geschrieben hat, falls auf Google sichtbar. Ein Konto mit genau einer Bewertung ist ein Warnsignal."
           aria-label="Anzahl bisheriger Bewertungen des Kontos"
           value={draft.reviewerReviewCount}
           onChange={(e) => set({ reviewerReviewCount: e.target.value })}

@@ -1,0 +1,240 @@
+/* Quelle für das Stylesheet der Landingpage.
+ *
+ * Gebaut mit:  npm run build:landing
+ * Ergebnis:    landing/klarblick.css
+ *
+ * Zuvor holte die Seite Tailwind und die Schriften zur Laufzeit von fremden CDNs.
+ * Das hatte zwei Nachteile: fällt ein CDN aus oder wird es blockiert (Firewall,
+ * Adblocker), zerfällt die Marketingseite zu ungestyltem Text — und das direkte
+ * Einbinden von Google Fonts überträgt die IP-Adresse jedes Besuchers in die USA,
+ * was das LG München I 2022 als DSGVO-Verstoß gewertet hat. Beides entfällt, seit
+ * Stylesheet und Schriften mit ausgeliefert werden.
+ *
+ * Aufbau nach Tailwinds Ebenen (theme → base → components → utilities). Die
+ * Reihenfolge ist hier nicht kosmetisch: eigene Klassen gehören in `components`,
+ * damit Utility-Klassen im Markup sie überschreiben können. Stünden sie einfach
+ * am Dateiende, gewänne bei gleicher Spezifität die spätere Regel — ein
+ * `.container { padding: 0 24px }` würde dann jedes `pt-20` im Markup aushebeln.
+ */
+
+@import "tailwindcss";
+
+@source "../klarblick-landingpage.html";
+
+/* ---------- Design-System als Tailwind-Theme ----------
+ * Dadurch werden `font-display`, `font-mono`, `text-amber` usw. zu echten
+ * Utility-Klassen mit unseren Werten, statt mit Tailwinds Vorgaben zu kollidieren.
+ */
+@theme {
+  --color-ink: #12161f;
+  --color-panel: #1a2130;
+  --color-line: #2a3345;
+  --color-parchment: #e9e7e0;
+  --color-muted: #8b93a7;
+  --color-amber: #d9a441;
+  --color-teal: #4fa69c;
+  --color-alarm: #c2463d;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ---------- Schriften, selbst gehostet ----------
+ * font-display: swap zeigt sofort eine Ersatzschrift, statt den Text bis zum
+ * Laden der Datei unsichtbar zu lassen.
+ */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+}
+
+/* ---------- Grundlagen ---------- */
+@layer base {
+  /* Das Markup setzt an vielen Stellen inline style="color:var(--muted)".
+     Diese Variablen müssen deshalb erhalten bleiben. */
+  :root {
+    --ink: #12161f;
+    --panel: #1a2130;
+    --border: #2a3345;
+    --text: #e9e7e0;
+    --muted: #8b93a7;
+    --amber: #d9a441;
+    --teal: #4fa69c;
+    --red: #c2463d;
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Sichtbarer Fokusrahmen für Tastaturbedienung. */
+  :focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Seitenbreite ----------
+ * Als Utility statt als Komponente definiert: so setzt sie nur padding-inline
+ * und kollidiert nicht mit den pt-/pb-Klassen im Markup.
+ */
+@utility container {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* ---------- Wiederkehrende Bausteine ---------- */
+@layer components {
+  .btn-primary {
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Durchsichtiger Rahmen statt border:none — sonst ist .btn-ghost zwei Pixel
+       höher und die Schaltflächen der Preiskarten stehen nicht auf einer Linie. */
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #c99537;
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 22px;
+    border-radius: 8px;
+    transition: border-color 0.15s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--amber);
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  /* Wandernder Lichtstreifen über der Beispiel-Fallakte. */
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(217, 164, 65, 0.18), transparent);
+    animation: sweep 4s ease-in-out infinite;
+  }
+
+  @keyframes sweep {
+    0% {
+      left: -40%;
+    }
+    100% {
+      left: 140%;
+    }
+  }
+}
+
+/* Wer Bewegung im Betriebssystem abgeschaltet hat, soll sie hier nicht sehen. */
+@media (prefers-reduced-motion: reduce) {
+  .scanline::after {
+    animation: none;
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

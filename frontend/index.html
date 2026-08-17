@@ -8,11 +8,19 @@
       name="description"
       content="Erkennt verdächtige Muster in Google-Bewertungen und prüft die Sichtbarkeit in KI-Suchsystemen."
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#12161F" />
+    <!--
+      Schriften werden mitgeliefert statt von Google Fonts geholt: das direkte
+      Einbinden überträgt die IP-Adresse jedes Nutzers in die USA, was das
+      LG München I 2022 als DSGVO-Verstoß gewertet hat. Die @font-face-Regeln
+      stehen in src/index.css, die Dateien unter public/fonts/.
+    -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/ibm-plex-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
   </head>
   <body>

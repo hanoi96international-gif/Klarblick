@@ -34,16 +34,22 @@ auswählen.
       setzen, sonst geht die Beta-Anmeldung ins Leere
 - [ ] Die Domain der Landingpage in `ALLOWED_ORIGINS` des Backends eintragen
 
-### Tailwind vor dem Produktivbetrieb
+### Die Seite ist eigenständig
 
-Die Seite lädt Tailwind über das Play-CDN. Das wertet die Klassen erst im Browser
-aus: es funktioniert, kostet aber einen kurzen Moment ungestylter Darstellung beim
-Laden und lädt mehr als nötig. Für den Dauerbetrieb einmalig eine feste CSS-Datei
-erzeugen und statt des CDN-Skripts einbinden:
+Stylesheet (`landing/klarblick.css`, 18 KB) und Schriften (`landing/fonts/`, 156 KB)
+werden mit ausgeliefert. Es gibt keine Anfrage an ein fremdes CDN — die Seite
+funktioniert hinter Firmen-Firewalls, mit Adblocker und bei CDN-Ausfall unverändert,
+und überträgt keine Besucher-IP an Google (was das direkte Einbinden von Google
+Fonts täte; LG München I, 2022).
+
+Nach Änderungen an den Tailwind-Klassen im HTML das Stylesheet neu bauen — sonst
+fehlen die neu verwendeten Klassen:
 
 ```bash
-npx tailwindcss -i landing/input.css -o landing/tailwind.css --minify
+npm run build:landing
 ```
+
+Beim Hochladen muss der komplette Ordner `landing/` mit, nicht nur die HTML-Datei.
 
 ---
 

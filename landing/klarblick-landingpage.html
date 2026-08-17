@@ -4,55 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Klarblick — Sieh, was wirklich über dich gesagt wird</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Klarblick erkennt verdächtige Muster in Google-Bewertungen und prüft, ob dein Unternehmen bei KI-Empfehlungen auftaucht. Für lokale Betriebe." />
+<meta name="theme-color" content="#12161F" />
+<meta property="og:title" content="Klarblick — Sieh, was wirklich über dich gesagt wird" />
+<meta property="og:description" content="Erkennt gefälschte Bewertungen, bevor sie deinem Ruf schaden." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_DE" />
+
 <!--
-  Tailwind über das offizielle Play-CDN. Zuvor stand hier eine CSS-Datei in einem
-  <script src>-Tag — die wurde vom Browser nie als Stylesheet ausgewertet, sodass
-  sämtliche Utility-Klassen (flex, grid, md:grid-cols-3 …) wirkungslos blieben.
-  Das Play-CDN wertet die Klassen zur Laufzeit aus und beherrscht auch die hier
-  verwendete Kurzschreibweise mit eckigen Klammern (text-[11px]), die es in der
-  vorher verlinkten Version 2.2.19 noch nicht gab.
-  Vor dem Live-Gang durch einen Build-Schritt ersetzen, siehe DEPLOYMENT.md.
+  Stylesheet und Schriften werden mit ausgeliefert, nicht zur Laufzeit von einem
+  CDN geholt. Grund: fällt ein CDN aus oder wird es blockiert (Firewall, Adblocker),
+  zerfiele die Seite sonst zu ungestyltem Text — und das direkte Einbinden von
+  Google Fonts überträgt die IP jedes Besuchers in die USA, was das LG München I
+  2022 als DSGVO-Verstoß gewertet hat.
+  Neu bauen nach Änderungen an den Klassen:  npm run build:landing
 -->
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  :root{
-    --ink:#12161F; --panel:#1A2130; --border:#2A3345;
-    --text:#E9E7E0; --muted:#8B93A7;
-    --amber:#D9A441; --teal:#4FA69C; --red:#C2463D;
-  }
-  * { box-sizing: border-box; }
-  body{ background:var(--ink); color:var(--text); font-family:'IBM Plex Sans',sans-serif; margin:0; }
-  .font-display{ font-family:'Space Grotesk',sans-serif; }
-  .font-mono{ font-family:'IBM Plex Mono',monospace; }
-  .container{ max-width:1120px; margin:0 auto; padding:0 24px; }
-  a{ text-decoration:none; }
-  .btn-primary{
-    background:var(--amber); color:var(--ink); font-weight:600;
-    padding:12px 22px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .btn-primary:hover{ background:#c99537; transform:translateY(-1px); }
-  .btn-ghost{
-    border:1px solid var(--border); color:var(--text); padding:12px 22px; border-radius:8px;
-    transition:border-color .15s ease;
-  }
-  .btn-ghost:hover{ border-color:var(--amber); }
-  .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; }
-  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); }
-  .scanline{
-    position:relative; overflow:hidden;
-  }
-  .scanline::after{
-    content:''; position:absolute; top:0; left:-40%; width:40%; height:100%;
-    background:linear-gradient(90deg, transparent, rgba(217,164,65,0.18), transparent);
-    animation:sweep 3.5s ease-in-out infinite;
-  }
-  @keyframes sweep{ 0%{left:-40%;} 100%{left:100%;} }
-  .radar-ring{ border-radius:50%; border:1px solid var(--border); }
-  @media (prefers-reduced-motion: reduce){ .scanline::after{ animation:none; } }
-</style>
+<link rel="preload" href="fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="klarblick.css">
 </head>
 <body>
 
@@ -76,11 +45,16 @@
 
 <!-- HERO -->
 <section class="container pt-20 pb-16">
-  <div class="grid md:grid-cols-2 gap-12 items-center">
+  <!-- Textspalte etwas breiter als die Fallakte: deutsche Komposita
+       ("gefälschte Bewertung") brauchen Zeilenlänge, sonst zerfällt die
+       Überschrift in sechs Zeilen. -->
+  <div class="grid md:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
     <div>
       <p class="eyebrow mb-4">Für lokale Unternehmen &amp; Dienstleister</p>
-      <h1 class="font-display text-4xl md:text-5xl font-semibold leading-tight mb-5">
-        Bevor eine gefälschte Bewertung deinem Ruf schadet,<br class="hidden md:block"/>
+      <!-- text-balance verteilt die Zeilen gleichmäßig; der frühere manuelle
+           Umbruch saß dadurch bei jeder Fensterbreite falsch. -->
+      <h1 class="font-display text-[1.75rem] sm:text-4xl font-semibold leading-[1.15] tracking-tight text-balance mb-5">
+        Bevor eine gefälschte Bewertung deinem Ruf schadet,
         siehst du sie <span style="color:var(--amber);">kommen</span>.
       </h1>
       <p class="text-base leading-relaxed mb-8" style="color:var(--muted); max-width:480px;">
@@ -145,7 +119,7 @@
   <h2 class="font-display text-3xl font-semibold mb-12 max-w-xl">Zwei Werkzeuge, ein Ziel: dein Ruf bleibt in deiner Hand.</h2>
 
   <div class="grid md:grid-cols-2 gap-6">
-    <div class="card p-7">
+    <div class="card p-7 flex flex-col">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(217,164,65,.12);">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6l-9-4Z"/></svg>
       </div>
@@ -162,7 +136,7 @@
       </ul>
     </div>
 
-    <div class="card p-7">
+    <div class="card p-7 flex flex-col">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(79,166,156,.12);">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
       </div>
@@ -187,43 +161,43 @@
     <h2 class="font-display text-3xl font-semibold mb-12">Ehrlich kalkuliert, monatlich kündbar.</h2>
 
     <div class="grid md:grid-cols-3 gap-6">
-      <div class="card p-7">
+      <div class="card p-7 flex flex-col">
         <p class="font-mono text-xs mb-2" style="color:var(--muted);">STARTER</p>
         <p class="font-display text-3xl font-semibold mb-1">39€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
         <p class="text-sm mb-6" style="color:var(--muted);">Für einzelne Standorte</p>
-        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+        <ul class="text-sm space-y-2 mb-7 grow" style="color:var(--text);">
           <li>✓ 1 Standort</li>
           <li>✓ Sabotage-Detektor</li>
           <li>✓ Wöchentlicher Bericht</li>
         </ul>
-        <a href="#beta" class="btn-ghost w-full text-center block text-sm">Wählen</a>
+        <a href="#beta" class="btn-ghost w-full text-center text-sm mt-auto">Wählen</a>
       </div>
 
-      <div class="card p-7 relative" style="border-color:var(--amber);">
+      <div class="card p-7 relative flex flex-col" style="border-color:var(--amber);">
         <span class="absolute -top-3 left-7 text-[10px] font-mono px-2 py-0.5 rounded-full" style="background:var(--amber); color:var(--ink);">BELIEBT</span>
         <p class="font-mono text-xs mb-2" style="color:var(--muted);">WACHSTUM</p>
         <p class="font-display text-3xl font-semibold mb-1">89€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
         <p class="text-sm mb-6" style="color:var(--muted);">Für wachsende Unternehmen</p>
-        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+        <ul class="text-sm space-y-2 mb-7 grow" style="color:var(--text);">
           <li>✓ Bis zu 3 Standorte</li>
           <li>✓ Sabotage-Detektor + Beweispaket-Export</li>
           <li>✓ AI-Sichtbarkeits-Check (täglich)</li>
           <li>✓ E-Mail-Alarme in Echtzeit</li>
         </ul>
-        <a href="#beta" class="btn-primary w-full text-center block text-sm">Wählen</a>
+        <a href="#beta" class="btn-primary w-full text-center text-sm mt-auto">Wählen</a>
       </div>
 
-      <div class="card p-7">
+      <div class="card p-7 flex flex-col">
         <p class="font-mono text-xs mb-2" style="color:var(--muted);">AGENTUR</p>
         <p class="font-display text-3xl font-semibold mb-1">199€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
         <p class="text-sm mb-6" style="color:var(--muted);">Für Agenturen &amp; Ketten</p>
-        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+        <ul class="text-sm space-y-2 mb-7 grow" style="color:var(--text);">
           <li>✓ Unbegrenzte Standorte</li>
           <li>✓ Alles aus Wachstum</li>
           <li>✓ White-Label-Berichte</li>
           <li>✓ Priorisierter Support</li>
         </ul>
-        <a href="#beta" class="btn-ghost w-full text-center block text-sm">Kontakt aufnehmen</a>
+        <a href="#beta" class="btn-ghost w-full text-center text-sm mt-auto">Kontakt aufnehmen</a>
       </div>
     </div>
   </div>
@@ -247,10 +221,12 @@
 
 <!-- FAQ -->
 <section id="faq" class="border-t" style="border-color:var(--border);">
-  <div class="container py-20 max-w-2xl">
+  <!-- Überschrift bündig zu allen anderen Abschnitten; nur der Fließtext wird
+       auf angenehme Lesebreite begrenzt. -->
+  <div class="container py-20">
     <p class="eyebrow mb-3">FAQ</p>
     <h2 class="font-display text-2xl font-semibold mb-10">Häufige Fragen</h2>
-    <div class="space-y-6">
+    <div class="space-y-6 max-w-2xl">
       <div>
         <p class="font-medium mb-1.5">Braucht ihr Zugriff auf mein Google-Konto?</p>
         <p class="text-sm" style="color:var(--muted);">Nein. Du verbindest dein Google Business Profil über den offiziellen Google-Anmeldedialog. Wir sehen nur Bewertungsdaten, niemals dein Passwort, und du kannst den Zugriff jederzeit in deinem Google-Konto widerrufen.</p>

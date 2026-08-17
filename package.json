@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
-    "build": "npm run build --workspace frontend",
+    "build": "npm run build:landing && npm run build --workspace frontend",
+    "build:landing": "tailwindcss -i landing/src/input.css -o landing/klarblick.css --minify",
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend"
   },
