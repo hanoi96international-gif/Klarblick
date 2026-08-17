@@ -32,7 +32,9 @@ testbar bleiben und wird sowohl im Browser als auch später serverseitig gebrauc
 │   └── test/        Unit-Tests für jedes Signal
 ├── frontend/        Vite + React — Dashboard (Detektor + Sichtbarkeits-Check)
 ├── backend/         Express — Google-OAuth, Sichtbarkeits-Proxy, Warteliste
-├── landing/         Marketing-Seite, eine Datei, ohne Build-Schritt
+├── landing/         Marketing-Seite plus Impressum, Datenschutz und AGB
+│   ├── src/         Quelle des Stylesheets (Tailwind)
+│   └── fonts/       Selbst gehostete Schriften — kein CDN, keine Google Fonts
 └── docs/            Projektkontext, rechtliche Entwürfe, Marketingmaterial
 ```
 
@@ -49,18 +51,23 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
-**Landingpage ansehen:** `landing/klarblick-landingpage.html` im Browser öffnen —
+**Landingpage ansehen:** `landing/index.html` im Browser öffnen —
 keine Abhängigkeiten nötig.
 
 Ohne `.env` startet das Backend trotzdem: Google-Anmeldung und Sichtbarkeits-Check
 melden sich dann als nicht konfiguriert, alles andere funktioniert.
 
-## Tests und Build
+## Tests, Linter und Build
 
 ```bash
-npm test            # alle Pakete
-npm run build       # Dashboard nach frontend/dist
+npm run lint        # ESLint über alle Pakete
+npm test            # 109 Tests: Detektor 64, Backend 29, Frontend 16
+npm run build       # Landingpage-Stylesheet und Dashboard nach frontend/dist
 ```
+
+Nach Änderungen an den Tailwind-Klassen im HTML der Landingpage muss
+`npm run build:landing` laufen — die CI prüft, ob das eingecheckte Stylesheet
+zum Markup passt, und schlägt sonst fehl.
 
 ## Erkennungslogik (9 Signale, 3 Kategorien)
 

@@ -26,11 +26,31 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      - name: Linter
+        run: npm run lint
+
       - name: Tests
         run: npm test --workspaces --if-present
 
-      - name: Frontend bauen
+      - name: Bauen (Landingpage-Stylesheet und Dashboard)
         run: npm run build
+
+      # Das Stylesheet der Landingpage liegt gebaut im Repository. Weicht es vom
+      # Ergebnis eines frischen Builds ab, wurde eine Klasse im HTML geändert,
+      # ohne neu zu bauen — live würde die Seite dann teilweise ungestylt aussehen.
+      - name: Landingpage-Stylesheet ist aktuell
+        run: git diff --exit-code -- landing/klarblick.css
+
+      # Ein wieder eingeschlichener CDN-Verweis würde Layout und Datenschutz
+      # von einem fremden Dienst abhängig machen.
+      - name: Keine externen Ressourcen in den Seiten
+        run: |
+          if grep -rn "cdn\.tailwindcss\.com\|fonts\.googleapis\.com\|fonts\.gstatic\.com" \
+               landing/*.html frontend/index.html frontend/dist/index.html; then
+            echo "::error::Externe Ressource gefunden — Schriften und Stylesheet müssen mitgeliefert werden."
+            exit 1
+          fi
+          echo "Keine externen Verweise gefunden."
 
       - name: Build-Ergebnis sichern
         uses: actions/upload-artifact@v4

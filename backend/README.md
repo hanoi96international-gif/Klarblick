@@ -27,6 +27,7 @@ Server trotzdem und meldet im Log, welche Funktionen deshalb inaktiv sind.
 | `POST` | `/api/visibility` | AI-Sichtbarkeits-Check, fünf Anfrageformulierungen |
 | `POST` | `/api/waitlist` | Beta-Anmeldung von der Landingpage |
 | `GET` | `/api/waitlist/count` | Anzahl der Anmeldungen (keine Adressen) |
+| `GET` | `/api/waitlist/export` | Alle Anmeldungen als CSV oder JSON, nur mit `ADMIN_TOKEN` |
 
 ## Aufbau
 

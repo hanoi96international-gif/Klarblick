@@ -51,7 +51,9 @@ export function detectDelimiter(raw) {
  * @returns {string[][]}
  */
 export function parseDelimited(raw, delimiter) {
-  const text = String(raw ?? "").replace(/^﻿/, ""); // Byte Order Mark entfernen
+  // Byte Order Mark entfernen. Als Escape geschrieben, weil das Zeichen sonst
+  // unsichtbar im Quelltext steht und beim Bearbeiten leicht verloren geht.
+  const text = String(raw ?? "").replace(/^\uFEFF/, "");
   const d = delimiter || detectDelimiter(text);
 
   const rows = [];

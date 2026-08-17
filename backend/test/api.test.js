@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { after, before, describe, it } from "node:test";
+import { after, describe, it } from "node:test";
 
 // Vor dem Laden der Module setzen: config.js und db.js lesen die Umgebung beim
 // Import, und die Tests sollen nicht die echte Datenbank anfassen.
@@ -15,6 +15,7 @@ delete process.env.GOOGLE_CLIENT_ID;
 delete process.env.GOOGLE_CLIENT_SECRET;
 
 const { createApp } = await import("../src/app.js");
+const { config } = await import("../src/config.js");
 const { closeDb } = await import("../src/db.js");
 const { default: request } = await import("supertest");
 
@@ -137,6 +138,83 @@ describe("GET /auth/me", () => {
     const res = await request(app).get("/auth/me");
     assert.equal(res.status, 200);
     assert.equal(res.body.signedIn, false);
+  });
+});
+
+describe("GET /api/waitlist/export", () => {
+  const TOKEN = "geheim-fuer-den-test";
+
+  it("ist abgeschaltet, solange kein ADMIN_TOKEN gesetzt ist", async () => {
+    config.adminToken = "";
+    const res = await request(app).get("/api/waitlist/export");
+    assert.equal(res.status, 503);
+  });
+
+  it("verweigert fehlenden und falschen Token", async () => {
+    config.adminToken = TOKEN;
+
+    assert.equal((await request(app).get("/api/waitlist/export")).status, 401);
+    assert.equal(
+      (await request(app).get("/api/waitlist/export").set("Authorization", "Bearer falsch"))
+        .status,
+      401
+    );
+    // Gleiche Länge wie der echte Token — der Vergleich darf auch dann nicht durchlassen.
+    assert.equal(
+      (
+        await request(app)
+          .get("/api/waitlist/export")
+          .set("Authorization", `Bearer ${"x".repeat(TOKEN.length)}`)
+      ).status,
+      401
+    );
+
+    config.adminToken = "";
+  });
+
+  it("liefert mit gültigem Token eine CSV mit den Anmeldungen", async () => {
+    config.adminToken = TOKEN;
+    await request(app).post("/api/waitlist").send({ email: "export@example.de" });
+
+    const res = await request(app)
+      .get("/api/waitlist/export")
+      .set("Authorization", `Bearer ${TOKEN}`);
+
+    assert.equal(res.status, 200);
+    assert.match(res.headers["content-type"], /text\/csv/);
+    assert.match(res.headers["content-disposition"], /klarblick-warteliste\.csv/);
+    assert.match(res.text, /email,unternehmen,angemeldet_am/);
+    assert.match(res.text, /export@example\.de/);
+
+    config.adminToken = "";
+  });
+
+  it("maskiert Kommas und Anführungszeichen, statt die Spalten aufzubrechen", async () => {
+    config.adminToken = TOKEN;
+    await request(app)
+      .post("/api/waitlist")
+      .send({ email: "komma@example.de", business: 'Meier, Sohn & "Co"' });
+
+    const res = await request(app)
+      .get("/api/waitlist/export")
+      .set("Authorization", `Bearer ${TOKEN}`);
+
+    assert.match(res.text, /"Meier, Sohn & ""Co"""/);
+
+    config.adminToken = "";
+  });
+
+  it("liefert auf Wunsch JSON statt CSV", async () => {
+    config.adminToken = TOKEN;
+    const res = await request(app)
+      .get("/api/waitlist/export?format=json")
+      .set("Authorization", `Bearer ${TOKEN}`);
+
+    assert.equal(res.status, 200);
+    assert.ok(Array.isArray(res.body.entries));
+    assert.equal(res.body.count, res.body.entries.length);
+
+    config.adminToken = "";
   });
 });
 

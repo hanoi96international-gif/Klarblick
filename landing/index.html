@@ -39,8 +39,32 @@
       <a href="#preise" class="hover:text-white">Preise</a>
       <a href="#faq" class="hover:text-white">FAQ</a>
     </nav>
-    <a href="#beta" class="btn-primary text-sm">Beta-Zugang anfragen</a>
+    <a href="#beta" class="btn-primary text-sm hidden md:inline-flex">Beta-Zugang anfragen</a>
+
+    <!-- Unterhalb von md gab es bisher überhaupt keine Navigation: die Links
+         standen auf "hidden md:flex" ohne mobile Entsprechung. Auf dem Handy war
+         damit weder Preise noch FAQ erreichbar. -->
+    <button
+      id="menue-schalter"
+      class="md:hidden p-2 -mr-2"
+      aria-expanded="false"
+      aria-controls="menue-mobil"
+      aria-label="Menü öffnen"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path id="menue-symbol" d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
   </div>
+
+  <nav id="menue-mobil" class="md:hidden hidden border-t" style="border-color:var(--border);" aria-label="Hauptmenü">
+    <div class="container py-4 flex flex-col gap-1">
+      <a href="#funktionen" class="py-2.5 text-sm" style="color:var(--muted);">Funktionen</a>
+      <a href="#preise" class="py-2.5 text-sm" style="color:var(--muted);">Preise</a>
+      <a href="#faq" class="py-2.5 text-sm" style="color:var(--muted);">FAQ</a>
+      <a href="#beta" class="btn-primary text-sm mt-3">Beta-Zugang anfragen</a>
+    </div>
+  </nav>
 </header>
 
 <!-- HERO -->
@@ -214,6 +238,17 @@
       <input id="beta-email" name="email" type="email" required autocomplete="email" placeholder="deine@firma.de" class="px-4 py-3 rounded-lg text-sm flex-1" style="background:var(--ink); border:1px solid var(--border); color:var(--text); max-width:320px;" />
       <button id="beta-submit" type="submit" class="btn-primary text-sm justify-center">Platz sichern</button>
     </form>
+    <!-- Aktive Einwilligung statt vorangekreuzter Box: nach DSGVO muss die
+         Zustimmung eine bewusste Handlung sein. -->
+    <label class="flex items-start gap-2.5 mt-4 text-left text-xs cursor-pointer" style="color:var(--muted); max-width:520px; margin-inline:auto;">
+      <input id="beta-einwilligung" type="checkbox" required class="mt-0.5 shrink-0" />
+      <span>
+        Ich möchte über den Beta-Start informiert werden und habe die
+        <a href="datenschutz.html" class="underline" style="color:var(--amber);">Datenschutzerklärung</a>
+        gelesen. Die Einwilligung ist jederzeit widerrufbar.
+      </span>
+    </label>
+
     <p id="beta-status" role="status" aria-live="polite" class="text-sm mt-4" style="min-height:1.25rem;"></p>
     <p class="font-mono text-[11px] mt-2" style="color:var(--muted);">Wir melden uns nur zur Beta. Keine Weitergabe an Dritte, Abmeldung jederzeit.</p>
   </div>
@@ -249,9 +284,11 @@
       <p class="font-display text-sm font-semibold mb-1" style="color:var(--text);">Klarblick</p>
       <p>Reputations-Monitoring für lokale Unternehmen</p>
     </div>
-    <div class="font-mono">
-      <p>Impressum-Platzhalter — vor Live-Schaltung durch echte Firmendaten ersetzen (Pflicht nach § 5 TMG)</p>
-    </div>
+    <nav class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Rechtliches">
+      <a href="impressum.html" class="hover:text-white">Impressum</a>
+      <a href="datenschutz.html" class="hover:text-white">Datenschutz</a>
+      <a href="agb.html" class="hover:text-white">AGB</a>
+    </nav>
   </div>
 </footer>
 
@@ -263,11 +300,52 @@
 // gesetzt wird. Bleibt sie leer, wird sie relativ zur eigenen Domain aufgelöst.
 const KLARBLICK_API = ""; // z. B. "https://api.klarblick.de"
 
+// ---------- Mobiles Menü ----------
+(function () {
+  const schalter = document.getElementById("menue-schalter");
+  const menue = document.getElementById("menue-mobil");
+  const symbol = document.getElementById("menue-symbol");
+  if (!schalter || !menue) return;
+
+  const BURGER = "M4 7h16M4 12h16M4 17h16";
+  const KREUZ = "M6 6l12 12M18 6L6 18";
+
+  function setzen(offen) {
+    menue.classList.toggle("hidden", !offen);
+    schalter.setAttribute("aria-expanded", String(offen));
+    schalter.setAttribute("aria-label", offen ? "Menü schließen" : "Menü öffnen");
+    symbol.setAttribute("d", offen ? KREUZ : BURGER);
+  }
+
+  schalter.addEventListener("click", function () {
+    setzen(menue.classList.contains("hidden"));
+  });
+
+  // Nach dem Antippen eines Links schließen, sonst verdeckt das Menü das Sprungziel.
+  menue.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () { setzen(false); });
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !menue.classList.contains("hidden")) {
+      setzen(false);
+      schalter.focus();
+    }
+  });
+
+  // Beim Wechsel auf Desktop-Breite zurücksetzen, sonst bleibt der Zustand hängen.
+  window.matchMedia("(min-width: 768px)").addEventListener("change", function (e) {
+    if (e.matches) setzen(false);
+  });
+})();
+
+// ---------- Beta-Anmeldung ----------
 (function () {
   const form = document.getElementById("beta-form");
   const input = document.getElementById("beta-email");
   const button = document.getElementById("beta-submit");
   const status = document.getElementById("beta-status");
+  const einwilligung = document.getElementById("beta-einwilligung");
 
   function show(message, tone) {
     status.textContent = message;
@@ -279,6 +357,11 @@ const KLARBLICK_API = ""; // z. B. "https://api.klarblick.de"
 
     const email = input.value.trim();
     if (!email) return;
+    if (einwilligung && !einwilligung.checked) {
+      show("Bitte bestätige kurz die Einwilligung, dann geht es los.", "error");
+      einwilligung.focus();
+      return;
+    }
 
     button.disabled = true;
     const originalLabel = button.textContent;

@@ -88,7 +88,7 @@ noch nicht:
 
 1. Kostenlosen Account bei [vercel.com](https://vercel.com) oder
    [netlify.com](https://netlify.com) anlegen
-2. Die Datei `klarblick-landingpage.html` dort per Drag & Drop hochladen
+2. Den Ordner `landing/` dort per Drag & Drop hochladen
    (beide bieten "Deploy ohne Code" für einzelne HTML-Dateien)
 3. Du bekommst eine kostenlose URL wie `klarblick.vercel.app` — reicht für den
    Test völlig aus

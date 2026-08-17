@@ -20,19 +20,32 @@ Die Landingpage ist eine einzelne HTML-Datei ohne Build-Schritt.
 npx vercel --cwd landing
 ```
 
-**GitHub Pages**: `landing/klarblick-landingpage.html` nach `docs/index.html`
+**GitHub Pages**: den Ordner `landing/` nach `docs/`
 kopieren und in den Repository-Einstellungen unter *Pages* den Ordner `docs`
 auswählen.
 
+Der Ordner enthält vier Seiten: `index.html` (Startseite), `impressum.html`,
+`datenschutz.html` und `agb.html`, dazu `klarblick.css` und `fonts/`.
+
 ### Vor dem Live-Gang zwingend erledigen
 
-- [ ] **Impressum** im Footer durch echte Firmendaten ersetzen — Pflicht nach § 5 TMG,
-      und ein fehlendes Impressum ist ein häufiger Abmahngrund
-- [ ] **Datenschutzerklärung** verlinken (Entwurf in `docs/rechtliche-entwuerfe.md`,
-      vorher anwaltlich oder über eRecht24 prüfen lassen)
+- [ ] **Platzhalter in den drei Rechtsseiten ersetzen.** Sie sind gelb hinterlegt
+      und dadurch nicht zu übersehen; die Zahl steht unten. Ein unvollständiges
+      Impressum ist ein häufiger Abmahngrund (§ 5 TMG).
+- [ ] **Rechtstexte prüfen lassen** — anwaltlich oder über eRecht24. Weil Klarblick
+      Bewertungstexte mit Namen Dritter verarbeitet, ist das keine Kür.
+- [ ] Die Hinweiskästen („Vor der Veröffentlichung ausfüllen") aus den drei
+      Rechtsseiten löschen, sobald sie ausgefüllt sind
 - [ ] `KLARBLICK_API` im `<script>`-Block am Seitenende auf die Backend-Adresse
       setzen, sonst geht die Beta-Anmeldung ins Leere
 - [ ] Die Domain der Landingpage in `ALLOWED_ORIGINS` des Backends eintragen
+
+Zu ersetzende Platzhalter: Impressum 10, Datenschutz 10, AGB 6. Alle im Quelltext
+über `class="platzhalter"` auffindbar:
+
+```bash
+grep -c 'class="platzhalter"' landing/*.html
+```
 
 ### Die Seite ist eigenständig
 
@@ -87,6 +100,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | für Login | Aus der Google Cloud Console |
 | `GOOGLE_REDIRECT_URI` | für Login | Muss exakt mit dem Eintrag bei Google übereinstimmen |
 | `ANTHROPIC_API_KEY` | für Sichtbarkeits-Check | Von console.anthropic.com |
+| `ADMIN_TOKEN` | für den Warteliste-Export | Ohne diesen Wert ist der Export abgeschaltet |
 | `DATABASE_FILE` | nein | Pfad zur SQLite-Datei, Vorgabe `./klarblick.db` |
 
 Der Server startet mit fehlenden Pflichtwerten gar nicht erst, sondern nennt die
@@ -153,3 +167,21 @@ Kunden arbeiten in der Zwischenzeit über den CSV-Import, der vollständig funkt
 | `POST /api/waitlist` | 5 pro Stunde und IP |
 
 **Logs:** Fehler gehen nach stderr. Weder Tokens noch API-Schlüssel werden geloggt.
+
+### Anmeldungen abrufen
+
+Die gesammelten Adressen liegen sonst nur in der Datenbank. Mit gesetztem
+`ADMIN_TOKEN`:
+
+```bash
+# Als CSV, mit Byte Order Mark für Excel
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+     https://api.deine-domain.de/api/waitlist/export > warteliste.csv
+
+# Oder als JSON
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+     "https://api.deine-domain.de/api/waitlist/export?format=json"
+```
+
+Der öffentliche Zähler `GET /api/waitlist/count` gibt nur die Anzahl zurück, nie
+Adressen — er lässt sich gefahrlos auf der Landingpage einbinden.

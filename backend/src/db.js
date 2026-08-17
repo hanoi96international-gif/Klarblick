@@ -56,6 +56,9 @@ const statements = {
     ON CONFLICT(email) DO NOTHING
   `),
   countWaitlist: db.prepare("SELECT COUNT(*) AS count FROM waitlist"),
+  listWaitlist: db.prepare(
+    "SELECT email, business, created_at FROM waitlist ORDER BY created_at ASC"
+  ),
 };
 
 /** Legt einen Nutzer an oder aktualisiert seine Tokens. Tokens werden verschlüsselt abgelegt. */
@@ -99,6 +102,11 @@ export function addToWaitlist({ email, business, source }) {
 
 export function waitlistCount() {
   return statements.countWaitlist.get().count;
+}
+
+/** Alle Einträge der Warteliste, älteste zuerst. */
+export function listWaitlist() {
+  return statements.listWaitlist.all();
 }
 
 export function closeDb() {

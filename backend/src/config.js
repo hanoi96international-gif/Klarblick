@@ -52,6 +52,10 @@ export const config = {
 
   databaseFile: optional("DATABASE_FILE", "./klarblick.db"),
 
+  // Schützt den Export der Warteliste. Ohne gesetzten Wert ist der Export
+  // abgeschaltet — lieber nicht erreichbar als ungeschützt erreichbar.
+  adminToken: optional("ADMIN_TOKEN", ""),
+
   google: {
     clientId: optional("GOOGLE_CLIENT_ID", ""),
     clientSecret: optional("GOOGLE_CLIENT_SECRET", ""),

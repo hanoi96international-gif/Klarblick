@@ -19,7 +19,9 @@
 
 @import "tailwindcss";
 
-@source "../klarblick-landingpage.html";
+/* Alle Seiten im Ordner, nicht nur die Startseite — sonst fehlen den
+   Rechtsseiten ihre Utility-Klassen. */
+@source "../*.html";
 
 /* ---------- Design-System als Tailwind-Theme ----------
  * Dadurch werden `font-display`, `font-mono`, `text-amber` usw. zu echten
@@ -200,6 +202,51 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--amber);
+  }
+
+  /* Noch nicht ausgefüllte Angaben in den Rechtstexten. Bewusst grell:
+     ein übersehener Platzhalter im Impressum ist ein Abmahngrund. */
+  .platzhalter {
+    background: rgba(217, 164, 65, 0.18);
+    border-bottom: 2px dotted var(--amber);
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0 4px;
+    border-radius: 3px;
+  }
+
+  /* Fließtext der Rechtsseiten. */
+  .rechtstext h2 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .rechtstext h2:first-child {
+    margin-top: 0;
+  }
+  .rechtstext p,
+  .rechtstext ul {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .rechtstext ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .rechtstext li {
+    margin-bottom: 0.375rem;
+  }
+  .rechtstext a {
+    color: var(--amber);
+    text-decoration: underline;
+  }
+  .rechtstext strong {
+    color: var(--text);
   }
 
   /* Wandernder Lichtstreifen über der Beispiel-Fallakte. */
