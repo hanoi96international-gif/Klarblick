@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klarblick — Sieh, was wirklich über dich gesagt wird</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"></script>
+<style>
+  :root{
+    --ink:#12161F; --panel:#1A2130; --border:#2A3345;
+    --text:#E9E7E0; --muted:#8B93A7;
+    --amber:#D9A441; --teal:#4FA69C; --red:#C2463D;
+  }
+  * { box-sizing: border-box; }
+  body{ background:var(--ink); color:var(--text); font-family:'IBM Plex Sans',sans-serif; margin:0; }
+  .font-display{ font-family:'Space Grotesk',sans-serif; }
+  .font-mono{ font-family:'IBM Plex Mono',monospace; }
+  .container{ max-width:1120px; margin:0 auto; padding:0 24px; }
+  a{ text-decoration:none; }
+  .btn-primary{
+    background:var(--amber); color:var(--ink); font-weight:600;
+    padding:12px 22px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{ background:#c99537; transform:translateY(-1px); }
+  .btn-ghost{
+    border:1px solid var(--border); color:var(--text); padding:12px 22px; border-radius:8px;
+    transition:border-color .15s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--amber); }
+  .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; }
+  .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); }
+  .scanline{
+    position:relative; overflow:hidden;
+  }
+  .scanline::after{
+    content:''; position:absolute; top:0; left:-40%; width:40%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(217,164,65,0.18), transparent);
+    animation:sweep 3.5s ease-in-out infinite;
+  }
+  @keyframes sweep{ 0%{left:-40%;} 100%{left:100%;} }
+  .radar-ring{ border-radius:50%; border:1px solid var(--border); }
+  @media (prefers-reduced-motion: reduce){ .scanline::after{ animation:none; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="border-b" style="border-color:var(--border);">
+  <div class="container flex items-center justify-between py-4">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-md flex items-center justify-center" style="background:var(--amber);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#12161F" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="#12161F"/></svg>
+      </div>
+      <span class="font-display font-semibold text-lg">Klarblick</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-8 text-sm" style="color:var(--muted);">
+      <a href="#funktionen" class="hover:text-white">Funktionen</a>
+      <a href="#preise" class="hover:text-white">Preise</a>
+      <a href="#faq" class="hover:text-white">FAQ</a>
+    </nav>
+    <a href="#beta" class="btn-primary text-sm">Beta-Zugang anfragen</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="container pt-20 pb-16">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <p class="eyebrow mb-4">Für lokale Unternehmen &amp; Dienstleister</p>
+      <h1 class="font-display text-4xl md:text-5xl font-semibold leading-tight mb-5">
+        Bevor eine gefälschte Bewertung deinem Ruf schadet,<br class="hidden md:block"/>
+        siehst du sie <span style="color:var(--amber);">kommen</span>.
+      </h1>
+      <p class="text-base leading-relaxed mb-8" style="color:var(--muted); max-width:480px;">
+        Klarblick erkennt verdächtige Bewertungsmuster, bevor sie deinem Google-Profil
+        schaden, und zeigt dir, ob dein Unternehmen überhaupt auftaucht, wenn Kunden
+        ChatGPT oder Perplexity nach einer Empfehlung fragen.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#beta" class="btn-primary">Kostenlos testen</a>
+        <a href="#funktionen" class="btn-ghost">So funktioniert's</a>
+      </div>
+      <p class="font-mono text-xs mt-6" style="color:var(--muted);">Keine Kreditkarte nötig · 14 Tage kostenlos</p>
+    </div>
+
+    <div class="card p-5 scanline">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-mono text-xs" style="color:var(--muted);">FALLAKTE · LIVE</span>
+        <span class="font-mono text-xs px-2 py-0.5 rounded-full" style="color:var(--red); background:rgba(194,70,61,.12);">2 auffällig</span>
+      </div>
+      <div class="space-y-2.5">
+        <div class="rounded-lg p-3" style="background:var(--ink); border:1px solid var(--border);">
+          <div class="flex justify-between text-xs font-mono mb-1" style="color:var(--muted);"><span>T. R. · 1★</span><span>vor 2 Std.</span></div>
+          <p class="text-sm">„Unterirdisch, absolute Katastrophe."</p>
+          <span class="inline-block mt-2 text-[10px] font-mono px-1.5 py-0.5 rounded" style="border:1px solid var(--border); color:var(--red);">Ähnlicher Text wie andere Bewertung</span>
+        </div>
+        <div class="rounded-lg p-3" style="background:var(--ink); border:1px solid var(--border);">
+          <div class="flex justify-between text-xs font-mono mb-1" style="color:var(--muted);"><span>M. K. · 1★</span><span>vor 4 Std.</span></div>
+          <p class="text-sm">„Absolute Katastrophe, nie wieder!"</p>
+          <span class="inline-block mt-2 text-[10px] font-mono px-1.5 py-0.5 rounded" style="border:1px solid var(--border); color:var(--amber);">Ausbruch nach langer Stille</span>
+        </div>
+        <div class="rounded-lg p-3" style="background:var(--ink); border:1px solid var(--border);">
+          <div class="flex justify-between text-xs font-mono mb-1" style="color:var(--muted);"><span>S. Berger · 5★</span><span>vor 3 Wochen</span></div>
+          <p class="text-sm" style="color:var(--muted);">„Herr Wagner hat unsere Heizung fair repariert…"</p>
+          <span class="inline-block mt-2 text-[10px] font-mono px-1.5 py-0.5 rounded" style="border:1px solid var(--border); color:var(--teal);">Unauffällig</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="border-y" style="border-color:var(--border); background:var(--panel);">
+  <div class="container py-14 grid md:grid-cols-3 gap-8">
+    <div>
+      <p class="font-display text-3xl font-semibold mb-1" style="color:var(--amber);">Unsichtbar</p>
+      <p class="text-sm" style="color:var(--muted);">Fake-Bewertungen werden mit KI so gut geschrieben, dass sie mit bloßem Auge kaum noch von echten zu unterscheiden sind.</p>
+    </div>
+    <div>
+      <p class="font-display text-3xl font-semibold mb-1" style="color:var(--amber);">Verspätet</p>
+      <p class="text-sm" style="color:var(--muted);">Google-Meldungen werden oft erst nach Wochen bearbeitet — der Imageschaden ist da längst passiert.</p>
+    </div>
+    <div>
+      <p class="font-display text-3xl font-semibold mb-1" style="color:var(--amber);">Blind</p>
+      <p class="text-sm" style="color:var(--muted);">Die meisten Unternehmen wissen nicht, ob sie in ChatGPT- oder Perplexity-Empfehlungen überhaupt vorkommen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="funktionen" class="container py-20">
+  <p class="eyebrow mb-3">Funktionen</p>
+  <h2 class="font-display text-3xl font-semibold mb-12 max-w-xl">Zwei Werkzeuge, ein Ziel: dein Ruf bleibt in deiner Hand.</h2>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="card p-7">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(217,164,65,.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6l-9-4Z"/></svg>
+      </div>
+      <h3 class="font-display text-lg font-semibold mb-2">Sabotage-Detektor</h3>
+      <p class="text-sm leading-relaxed mb-4" style="color:var(--muted);">
+        Analysiert jede neue Bewertung auf Zeitmuster, Textähnlichkeit, Bewertungsabweichung
+        und Konto-Signale — Muster, die aus veröffentlichter Forschung zur Erkennung
+        koordinierter Bewertungsangriffe stammen.
+      </p>
+      <ul class="text-sm space-y-1.5" style="color:var(--text);">
+        <li>→ Risikoscore pro Bewertung</li>
+        <li>→ Fertiges Beweispaket für Google-Meldungen</li>
+        <li>→ Automatischer Alarm bei Häufungswellen</li>
+      </ul>
+    </div>
+
+    <div class="card p-7">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(79,166,156,.12);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <h3 class="font-display text-lg font-semibold mb-2">AI-Sichtbarkeits-Check</h3>
+      <p class="text-sm leading-relaxed mb-4" style="color:var(--muted);">
+        Testet regelmäßig mit realen Anfragen, ob dein Unternehmen empfohlen wird, wenn
+        jemand ChatGPT, Perplexity oder Gemini nach Anbietern in deiner Branche und Stadt fragt.
+      </p>
+      <ul class="text-sm space-y-1.5" style="color:var(--text);">
+        <li>→ Sichtbarkeits-Score über mehrere KI-Systeme</li>
+        <li>→ Vergleich mit deinen Mitbewerbern</li>
+        <li>→ Verlauf über Zeit</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="preise" class="border-t" style="border-color:var(--border); background:var(--panel);">
+  <div class="container py-20">
+    <p class="eyebrow mb-3">Preise</p>
+    <h2 class="font-display text-3xl font-semibold mb-12">Ehrlich kalkuliert, monatlich kündbar.</h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card p-7">
+        <p class="font-mono text-xs mb-2" style="color:var(--muted);">STARTER</p>
+        <p class="font-display text-3xl font-semibold mb-1">39€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
+        <p class="text-sm mb-6" style="color:var(--muted);">Für einzelne Standorte</p>
+        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+          <li>✓ 1 Standort</li>
+          <li>✓ Sabotage-Detektor</li>
+          <li>✓ Wöchentlicher Bericht</li>
+        </ul>
+        <a href="#beta" class="btn-ghost w-full text-center block text-sm">Wählen</a>
+      </div>
+
+      <div class="card p-7 relative" style="border-color:var(--amber);">
+        <span class="absolute -top-3 left-7 text-[10px] font-mono px-2 py-0.5 rounded-full" style="background:var(--amber); color:var(--ink);">BELIEBT</span>
+        <p class="font-mono text-xs mb-2" style="color:var(--muted);">WACHSTUM</p>
+        <p class="font-display text-3xl font-semibold mb-1">89€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
+        <p class="text-sm mb-6" style="color:var(--muted);">Für wachsende Unternehmen</p>
+        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+          <li>✓ Bis zu 3 Standorte</li>
+          <li>✓ Sabotage-Detektor + Beweispaket-Export</li>
+          <li>✓ AI-Sichtbarkeits-Check (täglich)</li>
+          <li>✓ E-Mail-Alarme in Echtzeit</li>
+        </ul>
+        <a href="#beta" class="btn-primary w-full text-center block text-sm">Wählen</a>
+      </div>
+
+      <div class="card p-7">
+        <p class="font-mono text-xs mb-2" style="color:var(--muted);">AGENTUR</p>
+        <p class="font-display text-3xl font-semibold mb-1">199€<span class="text-sm font-normal" style="color:var(--muted);">/Monat</span></p>
+        <p class="text-sm mb-6" style="color:var(--muted);">Für Agenturen &amp; Ketten</p>
+        <ul class="text-sm space-y-2 mb-7" style="color:var(--text);">
+          <li>✓ Unbegrenzte Standorte</li>
+          <li>✓ Alles aus Wachstum</li>
+          <li>✓ White-Label-Berichte</li>
+          <li>✓ Priorisierter Support</li>
+        </ul>
+        <a href="#beta" class="btn-ghost w-full text-center block text-sm">Kontakt aufnehmen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BETA SIGNUP -->
+<section id="beta" class="container py-20">
+  <div class="card p-10 md:p-14 text-center scanline" style="max-width:640px; margin:0 auto;">
+    <p class="eyebrow mb-3">Beta</p>
+    <h2 class="font-display text-2xl md:text-3xl font-semibold mb-3">Sei unter den ersten 50 Betrieben.</h2>
+    <p class="text-sm mb-7" style="color:var(--muted);">Beta-Teilnehmer erhalten 3 Monate kostenlos und entscheiden mit, welche Funktionen als Nächstes kommen.</p>
+    <form class="flex flex-col sm:flex-row gap-3 justify-center" onsubmit="return false;">
+      <input type="email" required placeholder="deine@firma.de" class="px-4 py-3 rounded-lg text-sm flex-1" style="background:var(--ink); border:1px solid var(--border); color:var(--text); max-width:320px;" />
+      <button class="btn-primary text-sm justify-center">Platz sichern</button>
+    </form>
+    <p class="font-mono text-[11px] mt-4" style="color:var(--muted);">Formular ist ein Platzhalter — an ein echtes E-Mail-Tool anbinden, siehe Hinweis im Chat.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="border-t" style="border-color:var(--border);">
+  <div class="container py-20 max-w-2xl">
+    <p class="eyebrow mb-3">FAQ</p>
+    <h2 class="font-display text-2xl font-semibold mb-10">Häufige Fragen</h2>
+    <div class="space-y-6">
+      <div>
+        <p class="font-medium mb-1.5">Braucht ihr Zugriff auf mein Google-Konto?</p>
+        <p class="text-sm" style="color:var(--muted);">Nein. Du verbindest dein Google Business Profil über den offiziellen Google-Anmeldedialog. Wir sehen nur Bewertungsdaten, niemals dein Passwort, und du kannst den Zugriff jederzeit in deinem Google-Konto widerrufen.</p>
+      </div>
+      <div>
+        <p class="font-medium mb-1.5">Löscht ihr Bewertungen für mich?</p>
+        <p class="text-sm" style="color:var(--muted);">Nein — das kann laut Googles Richtlinien niemand seriös versprechen. Wir liefern dir ein fundiertes Beweispaket, das deine eigene Google-Meldung deutlich stärker macht.</p>
+      </div>
+      <div>
+        <p class="font-medium mb-1.5">Funktioniert das auch ohne Google-Profil-API-Zugang?</p>
+        <p class="text-sm" style="color:var(--muted);">In der Beta-Phase trägst du Bewertungen zunächst manuell oder per CSV-Import ein. Die direkte Google-Anbindung folgt, sobald unser API-Zugriff freigeschaltet ist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t py-10" style="border-color:var(--border);">
+  <div class="container flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs" style="color:var(--muted);">
+    <div>
+      <p class="font-display text-sm font-semibold mb-1" style="color:var(--text);">Klarblick</p>
+      <p>Reputations-Monitoring für lokale Unternehmen</p>
+    </div>
+    <div class="font-mono">
+      <p>Impressum-Platzhalter — vor Live-Schaltung durch echte Firmendaten ersetzen (Pflicht nach § 5 TMG)</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

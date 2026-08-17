@@ -1,0 +1,20 @@
+{
+  "name": "klarblick-backend",
+  "version": "0.1.0",
+  "description": "Backend-Grundgerüst: Google-OAuth-Login + Business-Profile-Reviews für Klarblick",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "google-auth-library": "^9.11.0",
+    "googleapis": "^140.0.0",
+    "dotenv": "^16.4.5",
+    "sqlite3": "^5.1.7",
+    "sqlite": "^5.1.1"
+  }
+}

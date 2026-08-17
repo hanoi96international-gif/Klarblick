@@ -1,0 +1,165 @@
+================================================================================
+KLARBLICK — GESPRÄCHSPROTOKOLL
+Unterhaltung mit Claude, 17. August 2026
+================================================================================
+
+HINWEIS: Dies ist ein von Claude erstelltes Protokoll des Gesprächsverlaufs, kein
+wortwörtlicher Chat-Export. Einen echten Wortlaut-Export bekommst du direkt über
+die Claude-Oberfläche (Konversation → Optionen → Export), nicht über mich.
+
+
+--------------------------------------------------------------------------------
+1. AUSGANGSPUNKT
+--------------------------------------------------------------------------------
+
+Frage nach Diensten, die Google-Bewertungen erstellen oder löschen.
+
+Erklärt: Es gibt einen grauen Markt dafür. Fake-Bewertungen werden über Netzwerke
+echter oder gemieteter Google-Konten erstellt; "Löschdienste" arbeiten meist mit
+Massen-Melden oder sind schlicht Abzocke. Beides verstößt gegen Googles Richtlinien
+und ist in Deutschland seit der UWG-Novelle 2022 (§ 5b UWG) ausdrücklich
+unlauterer Wettbewerb — für Auftraggeber wie Anbieter.
+
+
+--------------------------------------------------------------------------------
+2. ABGELEHNTE ANFRAGE
+--------------------------------------------------------------------------------
+
+Wunsch, einen solchen Dienst automatisiert mit Agenten aufzubauen.
+
+Abgelehnt, inklusive Teilkomponenten wie Skripten oder Agenten-Workflows. Gründe:
+Betrug am Verbraucher, § 5b UWG, Verstoß gegen Googles Nutzungsbedingungen, und
+das "Löschen"-Modell ist im Kern das Verkaufen eines nicht einlösbaren
+Versprechens.
+
+Stattdessen legitime Alternativen angeboten — daraus entwickelte sich das
+eigentliche Projekt.
+
+
+--------------------------------------------------------------------------------
+3. IDEENFINDUNG UND MARKTRECHERCHE
+--------------------------------------------------------------------------------
+
+Durchgespielte Optionen: automatisiertes Review-Request-Tool, prädiktives
+Reputationsmonitoring, Cross-Plattform-Score, Voice-Agent, Branchenfokus,
+Review-zu-Lead-Pipeline, WhatsApp-Automation, Sabotage-Detektor.
+
+Recherche-Ergebnisse:
+- KI-generierte Fake-Bewertungen sind 2026 kaum noch von echten unterscheidbar
+  und kommen in koordinierten Wellen
+- Koordinierte Negativ-Angriffe auf Wettbewerber nehmen zu; Betroffene merken es
+  oft nicht
+- Googles Erkennung greift bei offensichtlichem Spam in Stunden, sonst teils erst
+  nach Wochen
+- KI-Suche ist massiv selektiver als Google: laut SOCi 2026 Local Visibility Index
+  werden nur 1,2 % der Standorte auf ChatGPT und 7,4 % auf Perplexity empfohlen,
+  gegenüber 35,9 % im lokalen Google-3-Pack
+- Dedizierte AI-Visibility-Tools existieren (Profound, AIclicks, Omnia u. a.),
+  zielen aber auf Multi-Location-Marken, nicht auf einzelne lokale Betriebe
+
+Entscheidung: Kombination aus Sabotage-Erkennung und AI-Sichtbarkeits-Check für
+lokale Einzelbetriebe. Echte Marktlücke, klar legal.
+
+
+--------------------------------------------------------------------------------
+4. ERKENNUNGSLOGIK (FORSCHUNGSBASIERT)
+--------------------------------------------------------------------------------
+
+Zweite Recherche in der akademischen Literatur zur Fake-Review-Erkennung
+(u. a. Lim et al., Fei et al., Savage et al., Li et al.). Daraus abgeleitet:
+
+STATISTISCH
+  - Zeitliche Häufung negativer Bewertungen (≤ 48 h)
+  - Ausbruch nach ≥ 14 Tagen Stille (stärkstes publiziertes Zeitmuster)
+  - Bewertungsabweichung vom Durchschnitt aller übrigen Bewertungen
+
+TEXTUELL
+  - Textähnlichkeit zwischen Bewertungen (Jaccard ≥ 0,35)
+  - Generizität (kaum konkrete Details, Namen, Zahlen)
+  - Sentiment passt nicht zur Sternebewertung
+  - Auffälliger Schreibstil (Caps-Anteil, Ausrufezeichen-Häufung)
+
+VERHALTENSBASIERT
+  - Konto mit nur einer einzigen Bewertung
+  - Gleicher Bewertername mehrfach
+
+KAMPAGNEN-EBENE
+  - Bimodale Verteilung (fast nur 1★ und 5★) als Warnung für koordinierte
+    Kampagnen
+
+KONFIDENZ-LOGIK
+  "Hohe Konfidenz" nur, wenn mindestens zwei verschiedene Kategorien zuschlagen.
+  Reduziert Fehlalarme deutlich gegenüber reinem Aufsummieren gleichartiger
+  Signale.
+
+
+--------------------------------------------------------------------------------
+5. GEBAUTE ARTEFAKTE
+--------------------------------------------------------------------------------
+
+  reputations-waechter.jsx        Dashboard: Detektor + AI-Sichtbarkeits-Check,
+                                  CSV-Import, Beweispaket-Export
+  klarblick-landingpage.html      Landingpage mit Preisen, FAQ, Beta-Formular
+  klarblick-backend/              Node/Express, Google-OAuth, SQLite,
+                                  vorbereiteter Reviews-Endpunkt
+  klarblick-rechtliche-entwuerfe  Impressum, Datenschutz, AGB (UNGEPRÜFT)
+  klarblick-social-media-plan     4 Wochen, 12 fertige Posts
+  klarblick-werbetexte-branchen   Google Ads, Meta, Outreach für 4 Branchen
+  klarblick-validierungsgespraeche Gesprächsleitfaden + Entscheidungsregel
+  KLARBLICK-PROJEKTKONTEXT.md     Kontextdokument für neue Unterhaltungen
+  klarblick-repo-README.md        Repo-Beschreibung
+  klarblick-gitignore.txt         → beim Upload in .gitignore umbenennen
+
+Marke: "Klarblick". Farben Ink #12161F, Amber #D9A441, Teal #4FA69C, Rot #C2463D.
+Schriften Space Grotesk / IBM Plex Sans / IBM Plex Mono.
+
+Preismodell: Starter 39 €, Wachstum 89 €, Agentur 199 € pro Monat.
+
+
+--------------------------------------------------------------------------------
+6. GRENZEN, DIE IM GESPRÄCH KLARGESTELLT WURDEN
+--------------------------------------------------------------------------------
+
+Nicht möglich (technisch, nicht aus Vorsicht):
+  - Kein Zugriff auf GitHub; kein Netzwerkzugang im Container
+  - Kein Anlegen von Repos, kein Deployment, keine Werbekonten
+  - Keine Memory-Funktion aktiviert; kein Erinnern früherer Unterhaltungen
+  - Kein Verschieben dieser Unterhaltung nach Claude Code
+  - Kein wortwörtlicher Chat-Export
+
+Ausdrücklich empfohlen: keine Zugangsdaten oder Tokens in den Chat schreiben —
+sie nützen nichts und wären unnötig exponiert.
+
+
+--------------------------------------------------------------------------------
+7. STAND UND NÄCHSTE SCHRITTE
+--------------------------------------------------------------------------------
+
+Bewusste Entscheidung: erst validieren, dann investieren. Gewerbeanmeldung,
+Deployment, Stripe und Werbebudget sind zurückgestellt.
+
+  1. Landingpage kostenlos live schalten (Vercel/Netlify), Google-Formular für
+     E-Mail-Sammlung anhängen — dafür ist keine Firma nötig
+  2. 10–15 Validierungsgespräche nach Leitfaden führen
+  3. Entscheidungsregel:
+       5+ von 15 mit echtem Problem UND Warteliste-Zusage → weitermachen
+       2–4 → andere Branche testen
+       0–1 → Idee ehrlich hinterfragen
+
+Zur Gewerbeanmeldung: rechtlich ausgelöst durch Gewinnerzielungsabsicht, nicht
+durch das Betreiben einer Website. Kleingewerbe genügt zum Start (Anmeldung meist
+20–60 €, kein Mindestkapital). Kleinunternehmerregelung nach § 19 UStG greift
+2026 bei bis zu 25.000 € Vorjahres- und 100.000 € laufendem Umsatz.
+Keine Rechtsberatung — IHK-Erstgespräch oder Steuerberater empfohlen.
+
+
+--------------------------------------------------------------------------------
+8. LEITPLANKE FÜR DAS PROJEKT
+--------------------------------------------------------------------------------
+
+Klarblick deckt Manipulation AUF und erzeugt sie nicht. Keine Erstellung von
+Bewertungen, kein Massen-Melden, kein Versprechen von Löschungen. Das Produkt
+liefert Beweispakete, die die Meldung des Kunden stärken. Diese Grenze ist
+zugleich Verkaufsargument und rechtliche Voraussetzung.
+
+================================================================================
