@@ -40,15 +40,18 @@ Lokale Einzelbetriebe mit hohem Bewertungsdruck: Zahnärzte/Arztpraxen, Handwerk
 
 ## Was bereits gebaut ist
 
-| Datei | Inhalt |
+| Bereich | Inhalt |
 |---|---|
-| `reputations-waechter.jsx` | Funktionsfähiges Dashboard: Sabotage-Detektor + AI-Sichtbarkeits-Check, CSV-Import |
-| `klarblick-landingpage.html` | Marketing-Landingpage inkl. Preise, FAQ, Beta-Formular (Formular noch Platzhalter) |
-| `klarblick-backend/` | Node/Express-Grundgerüst mit Google-OAuth-Flow, SQLite, vorbereitetem Reviews-Endpunkt |
-| `klarblick-rechtliche-entwuerfe.md` | Impressum, Datenschutzerklärung, AGB — **ungeprüfte Entwürfe** |
-| `klarblick-social-media-plan.md` | 4 Wochen, 12 fertige Posts für LinkedIn/Instagram |
-| `klarblick-werbetexte-branchen.md` | Google Ads, Meta, Outreach für 4 Branchen |
-| `klarblick-validierungsgespraeche.md` | Gesprächsleitfaden + Entscheidungsregel für Marktvalidierung |
+| `shared/` | Erkennungslogik als eigenes Paket `@klarblick/detector`, ohne UI-Abhängigkeiten, mit Tests für jedes Signal |
+| `frontend/` | Vite-React-Dashboard: Sabotage-Detektor + AI-Sichtbarkeits-Check, CSV-Import per Datei oder Einfügen |
+| `landing/` | Marketing-Landingpage inkl. Preise, FAQ und funktionsfähigem Beta-Formular |
+| `backend/` | Express: Google-OAuth, Sichtbarkeits-Proxy, Warteliste, verschlüsselte Token-Ablage, Rate-Limits |
+| `.github/workflows/` | CI: Tests, Frontend-Build und Abhängigkeitsprüfung bei jedem Push |
+| `DEPLOYMENT.md` | Schritt-für-Schritt-Anleitung für Landingpage, Backend und Dashboard |
+| `docs/rechtliche-entwuerfe.md` | Impressum, Datenschutzerklärung, AGB — **ungeprüfte Entwürfe** |
+| `docs/social-media-plan.md` | 4 Wochen, 12 fertige Posts für LinkedIn/Instagram |
+| `docs/werbetexte-branchen.md` | Google Ads, Meta, Outreach für 4 Branchen |
+| `docs/validierungsgespraeche.md` | Gesprächsleitfaden + Entscheidungsregel für Marktvalidierung |
 
 ### Erkennungslogik (9 Signale, 3 Kategorien)
 
@@ -77,9 +80,15 @@ Kampagnen-Warnung bei bimodaler Verteilung (fast nur 1★ und 5★).
 Backend-Deployment, Werbekonten und Stripe sind absichtlich zurückgestellt, bis
 echtes Marktsignal vorliegt.
 
+Der Code steht seit dem Beta-Ausbau auf eigenen Füßen: Erkennungslogik als
+getestetes Paket, lauffähiges Dashboard, gehärtetes Backend, funktionsfähige
+Beta-Anmeldung, CI. Die technische Voraussetzung für die Validierung ist damit
+erfüllt — was fehlt, ist Marktsignal, nicht Software.
+
 **Als Nächstes dran:**
-1. Landingpage kostenlos live schalten (Vercel/Netlify, keine Firma nötig),
-   Google-Formular für E-Mail-Sammlung anhängen
+1. Landingpage kostenlos live schalten (Vercel/Netlify, keine Firma nötig) —
+   Anleitung in `DEPLOYMENT.md`. Impressum und Datenschutzerklärung vorher
+   einsetzen; das Beta-Formular sammelt bereits E-Mail-Adressen
 2. 10–15 Validierungsgespräche nach Leitfaden führen
 3. Entscheidungsregel: 5+ von 15 mit echtem Problem *und* Warteliste-Zusage
    → weitermachen. 2–4 → andere Branche testen. 0–1 → Idee ehrlich hinterfragen

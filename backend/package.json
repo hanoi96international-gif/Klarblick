@@ -1,20 +1,28 @@
 {
-  "name": "klarblick-backend",
-  "version": "0.1.0",
-  "description": "Backend-Grundgerüst: Google-OAuth-Login + Business-Profile-Reviews für Klarblick",
-  "main": "server.js",
+  "name": "@klarblick/backend",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Backend: Google-OAuth, Bewertungsabruf, AI-Sichtbarkeits-Proxy und Beta-Warteliste",
   "type": "module",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "node --watch server.js",
-    "start": "node server.js"
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test \"test/*.test.js\""
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "google-auth-library": "^9.11.0",
-    "googleapis": "^140.0.0",
-    "dotenv": "^16.4.5",
-    "sqlite3": "^5.1.7",
-    "sqlite": "^5.1.1"
+    "@anthropic-ai/sdk": "^0.68.0",
+    "better-sqlite3": "^11.7.0",
+    "better-sqlite3-session-store": "^0.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "googleapis": "^144.0.0",
+    "helmet": "^8.0.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
   }
 }

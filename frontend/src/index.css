@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* Design-System aus docs/KLARBLICK-PROJEKTKONTEXT.md */
+@theme {
+  --color-ink: #12161f;
+  --color-panel: #1a2130;
+  --color-line: #2a3345;
+  --color-parchment: #e9e7e0;
+  --color-muted: #8b93a7;
+  --color-amber: #d9a441;
+  --color-teal: #4fa69c;
+  --color-alarm: #c2463d;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+  font-family: var(--font-sans);
+}
+
+/* Suchstrahl über dem Analysefeld, solange gerechnet wird. */
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.scan-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(217, 164, 65, 0.25), transparent);
+  animation: sweep 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-sweep::after {
+    animation: none;
+  }
+}

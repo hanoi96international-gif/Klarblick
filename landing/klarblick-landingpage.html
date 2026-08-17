@@ -6,7 +6,16 @@
 <title>Klarblick — Sieh, was wirklich über dich gesagt wird</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"></script>
+<!--
+  Tailwind über das offizielle Play-CDN. Zuvor stand hier eine CSS-Datei in einem
+  <script src>-Tag — die wurde vom Browser nie als Stylesheet ausgewertet, sodass
+  sämtliche Utility-Klassen (flex, grid, md:grid-cols-3 …) wirkungslos blieben.
+  Das Play-CDN wertet die Klassen zur Laufzeit aus und beherrscht auch die hier
+  verwendete Kurzschreibweise mit eckigen Klammern (text-[11px]), die es in der
+  vorher verlinkten Version 2.2.19 noch nicht gab.
+  Vor dem Live-Gang durch einen Build-Schritt ersetzen, siehe DEPLOYMENT.md.
+-->
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root{
     --ink:#12161F; --panel:#1A2130; --border:#2A3345;
@@ -226,11 +235,13 @@
     <p class="eyebrow mb-3">Beta</p>
     <h2 class="font-display text-2xl md:text-3xl font-semibold mb-3">Sei unter den ersten 50 Betrieben.</h2>
     <p class="text-sm mb-7" style="color:var(--muted);">Beta-Teilnehmer erhalten 3 Monate kostenlos und entscheiden mit, welche Funktionen als Nächstes kommen.</p>
-    <form class="flex flex-col sm:flex-row gap-3 justify-center" onsubmit="return false;">
-      <input type="email" required placeholder="deine@firma.de" class="px-4 py-3 rounded-lg text-sm flex-1" style="background:var(--ink); border:1px solid var(--border); color:var(--text); max-width:320px;" />
-      <button class="btn-primary text-sm justify-center">Platz sichern</button>
+    <form id="beta-form" class="flex flex-col sm:flex-row gap-3 justify-center">
+      <label class="sr-only" for="beta-email">E-Mail-Adresse</label>
+      <input id="beta-email" name="email" type="email" required autocomplete="email" placeholder="deine@firma.de" class="px-4 py-3 rounded-lg text-sm flex-1" style="background:var(--ink); border:1px solid var(--border); color:var(--text); max-width:320px;" />
+      <button id="beta-submit" type="submit" class="btn-primary text-sm justify-center">Platz sichern</button>
     </form>
-    <p class="font-mono text-[11px] mt-4" style="color:var(--muted);">Formular ist ein Platzhalter — an ein echtes E-Mail-Tool anbinden, siehe Hinweis im Chat.</p>
+    <p id="beta-status" role="status" aria-live="polite" class="text-sm mt-4" style="min-height:1.25rem;"></p>
+    <p class="font-mono text-[11px] mt-2" style="color:var(--muted);">Wir melden uns nur zur Beta. Keine Weitergabe an Dritte, Abmeldung jederzeit.</p>
   </div>
 </section>
 
@@ -267,6 +278,63 @@
     </div>
   </div>
 </footer>
+
+<script>
+// Beta-Anmeldung. Die Adresse geht an das Klarblick-Backend (/api/waitlist).
+//
+// Die Landingpage liegt bei einem Static-Hoster, das Backend woanders — deshalb
+// steht die Backend-Adresse hier als eine Konstante, die vor dem Live-Gang
+// gesetzt wird. Bleibt sie leer, wird sie relativ zur eigenen Domain aufgelöst.
+const KLARBLICK_API = ""; // z. B. "https://api.klarblick.de"
+
+(function () {
+  const form = document.getElementById("beta-form");
+  const input = document.getElementById("beta-email");
+  const button = document.getElementById("beta-submit");
+  const status = document.getElementById("beta-status");
+
+  function show(message, tone) {
+    status.textContent = message;
+    status.style.color = tone === "error" ? "var(--alarm, #C2463D)" : "var(--teal, #4FA69C)";
+  }
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const email = input.value.trim();
+    if (!email) return;
+
+    button.disabled = true;
+    const originalLabel = button.textContent;
+    button.textContent = "Wird gesendet…";
+    show("", "ok");
+
+    try {
+      const response = await fetch(KLARBLICK_API + "/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email }),
+      });
+      const data = await response.json().catch(function () { return {}; });
+
+      if (!response.ok) {
+        show(data.error || "Das hat nicht geklappt. Bitte später erneut versuchen.", "error");
+        return;
+      }
+
+      // Bewusst dieselbe Bestätigung, ob neu oder bereits eingetragen — sonst
+      // ließe sich über das Formular abfragen, wer schon auf der Liste steht.
+      show(data.message || "Danke! Wir melden uns, sobald die Beta startet.", "ok");
+      form.reset();
+    } catch (error) {
+      show("Server nicht erreichbar. Bitte später erneut versuchen.", "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

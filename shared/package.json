@@ -1,0 +1,16 @@
+{
+  "name": "@klarblick/detector",
+  "version": "0.2.0",
+  "description": "Erkennungslogik für verdächtige Bewertungsmuster — ohne UI-Abhängigkeiten, in Browser und Node lauffähig",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
+  }
+}

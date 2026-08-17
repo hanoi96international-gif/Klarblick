@@ -1,0 +1,21 @@
+{
+  "name": "klarblick",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Reputations-Monitoring für lokale Unternehmen — Sabotage-Detektor und AI-Sichtbarkeits-Check",
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspace frontend",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
